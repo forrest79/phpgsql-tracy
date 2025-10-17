@@ -24,7 +24,7 @@ abstract class QueryDumper
 					if (\array_key_exists($i, $parameters)) {
 						$value = $parameters[$i];
 
-						\assert(\is_scalar($value) || $value === null);
+						\assert(\is_scalar($value) || $value === null || $value instanceof \Stringable);
 
 						unset($parameters[$i]);
 						return ($value === null) ? 'NULL' : \sprintf('\'%s\'', \str_replace('\'', '\'\'', (string) $value));
