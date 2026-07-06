@@ -17,11 +17,11 @@
 	},
 	"require-dev": {
 		"doctrine/sql-formatter": "^1.5",
-		"forrest79/phpcs": "^2.0",
-		"forrest79/phpcs-ignores": "^0.5",
-		"phpstan/phpstan": "^2.1",
+		"forrest79/phpcs": "^2.3",
+		"forrest79/phpcs-ignores": "^0.6",
+		"phpstan/phpstan": "^2.2",
 		"phpstan/phpstan-strict-rules": "^2.0",
-		"shipmonk/phpstan-rules": "^4.2"
+		"shipmonk/phpstan-rules": "^4.4"
 	},
 	"suggest": {
 		"doctrine/sql-formatter": "For better formating SQL queries to Tracy bar and bluescreen."
@@ -32,7 +32,7 @@
 		}
 	},
 	"scripts": {
-		"phpcs": "vendor/bin/phpcs --bootstrap=vendor/forrest79/phpcs-ignores/src/bootstrap-outdated.php -s src",
+		"phpcs": "vendor/bin/phpcs --bootstrap=vendor/forrest79/phpcs-ignores/src/bootstrap-outdated.php -s -q src",
 		"phpstan": "vendor/bin/phpstan analyse src"
 	},
 	"config": {

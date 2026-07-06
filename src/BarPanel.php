@@ -198,22 +198,17 @@ class BarPanel implements Tracy\IBarPanel
 
 	public function getTab(): string
 	{
-		$name = $this->name;
-		$count = $this->count;
-		$totalTimeMs = $this->totalTimeMs;
+		return Tracy\Helpers::capture(function (): void {
+			$name = $this->name;
+			$count = $this->count;
+			$totalTimeMs = $this->totalTimeMs;
 
-		$hasLongQuery = $this->longQueryCount > 0;
-		$hasRepeatingQueries = \count($this->getRepeatingQueries()) > 0;
-		$hasNonParsedColumns = \count($this->getNonParsedColumnsQueries()) > 0;
+			$hasLongQuery = $this->longQueryCount > 0;
+			$hasRepeatingQueries = \count($this->getRepeatingQueries()) > 0;
+			$hasNonParsedColumns = \count($this->getNonParsedColumnsQueries()) > 0;
 
-		\ob_start(static function (): void {
+			require __DIR__ . '/templates/BarPanel.tab.phtml';
 		});
-
-		require __DIR__ . '/templates/BarPanel.tab.phtml';
-
-		$data = \ob_get_clean();
-
-		return $data === false ? '' : $data;
 	}
 
 
@@ -223,33 +218,28 @@ class BarPanel implements Tracy\IBarPanel
 			return '';
 		}
 
-		$name = $this->name;
-		$count = $this->count;
-		$totalTimeMs = $this->totalTimeMs;
-		$queries = \array_slice($this->queries, -1 * $this->showMaxLastQueries);
+		return Tracy\Helpers::capture(function (): void {
+			$name = $this->name;
+			$count = $this->count;
+			$totalTimeMs = $this->totalTimeMs;
+			$queries = \array_slice($this->queries, -1 * $this->showMaxLastQueries);
 
-		$longQueryTimeMs = $this->longQueryTimeMs;
+			$longQueryTimeMs = $this->longQueryTimeMs;
 
-		$longQueryCount = $this->longQueryCount;
-		$repeatingQueries = $this->getRepeatingQueries();
-		$nonParsedColumnsQueries = $this->getNonParsedColumnsQueries();
+			$longQueryCount = $this->longQueryCount;
+			$repeatingQueries = $this->getRepeatingQueries();
+			$nonParsedColumnsQueries = $this->getNonParsedColumnsQueries();
 
-		$queryDump = function (string $sql, array $parameters = []): string {
-			return \sprintf('<pre class="dump">%s</pre>', $this->queryDumper->dump($sql, $parameters));
-		};
+			$queryDump = function (string $sql, array $parameters = []): string {
+				return \sprintf('<pre class="dump">%s</pre>', $this->queryDumper->dump($sql, $parameters));
+			};
 
-		$paramsDump = static function (array $parameters): string {
-			return Helper::dumpParameters($parameters);
-		};
+			$paramsDump = static function (array $parameters): string {
+				return Helper::dumpParameters($parameters);
+			};
 
-		\ob_start(static function (): void {
+			require __DIR__ . '/templates/BarPanel.panel.phtml';
 		});
-
-		require __DIR__ . '/templates/BarPanel.panel.phtml';
-
-		$data = \ob_get_clean();
-
-		return $data === false ? '' : $data;
 	}
 
 
